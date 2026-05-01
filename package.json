@@ -1,0 +1,11 @@
+{
+  "name": "fluxboard",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Throwaway app used for Cursor stress testing.",
+  "scripts": {
+    "dev": "node src/server/index.js",
+    "test": "echo \"tests are intentionally lightweight in this fixture\""
+  }
+}
+
