@@ -1,14 +1,8 @@
 import type { UserSession } from "../shared/types";
 import { DEMO_SESSION_TOKEN, SESSION_HEADER } from "../shared/auth";
 import { HttpError } from "./http-error";
+import { readHeader } from "./header-utils";
 import { getSession, putSession } from "./session-store";
-
-function readHeader(
-  headers: Record<string, string | undefined>,
-  name: string
-) {
-  return headers[name] ?? headers[name.toLowerCase()] ?? headers[name.toUpperCase()];
-}
 
 function extractToken(headers: Record<string, string | undefined>) {
   const sessionToken = readHeader(headers, SESSION_HEADER)?.trim();

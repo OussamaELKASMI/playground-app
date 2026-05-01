@@ -52,11 +52,10 @@ async function requestWithSessionRecovery(
     headers
   });
 
-  const shouldRecover =
-    storedToken !== DEMO_SESSION_TOKEN &&
-    (await responseLooksUnauthorized(response));
-  if (shouldRecover) {
-    // Recover from stale browser tokens when ephemeral server sessions reset.
+  // After a restart or another worker, the server may not recognize the browser token.
+  // Always normalize to the well-known demo token and retry once so refresh stays stable
+  // (including when localStorage already held the demo token but the first request failed).
+  if (await responseLooksUnauthorized(response)) {
     persistSessionToken(DEMO_SESSION_TOKEN);
     headers.set("Authorization", `Bearer ${DEMO_SESSION_TOKEN}`);
     headers.set(SESSION_HEADER, DEMO_SESSION_TOKEN);

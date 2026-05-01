@@ -6,9 +6,20 @@ export type ApiErrorDetail = {
   message: string;
 };
 
+/** Machine-readable codes clients can branch on; keep in sync with server throws. */
+export type ApiErrorCode =
+  | "VALIDATION_ERROR"
+  | "INVALID_JSON"
+  | "INVALID_BODY"
+  | "UNAUTHORIZED"
+  | "UNSUPPORTED_MEDIA_TYPE"
+  | "PAYLOAD_TOO_LARGE";
+
 export type ApiErrorBody = {
+  /** Short human-readable summary for logs and simple UIs. */
   error: string;
-  code: string;
+  code: ApiErrorCode;
+  /** Field-level issues; omitted when a single global error is enough. */
   details?: ApiErrorDetail[];
 };
 

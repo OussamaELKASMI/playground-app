@@ -1,6 +1,10 @@
 import { requireSession } from "../auth";
 import { createTask, listTasks } from "../tasks-db";
-import { validateCreateTaskBody } from "../validate-create-task-body";
+import {
+  assertJsonContentType,
+  parsePostTaskBody,
+  validateCreateTaskBody
+} from "../validate-create-task-body";
 
 export function getTasks(headers: Record<string, string | undefined>) {
   requireSession(headers);
@@ -12,7 +16,9 @@ export function postTask(
   body: unknown
 ) {
   const session = requireSession(headers);
-  const payload = validateCreateTaskBody(body);
+  assertJsonContentType(headers);
+  const record = parsePostTaskBody(body);
+  const payload = validateCreateTaskBody(record);
 
   return createTask({
     title: payload.title,
